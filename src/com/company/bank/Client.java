@@ -1,8 +1,8 @@
 package com.company.bank;
 
 public class Client {
-    private String name;
-    private String surname;
+    final String name;
+    final String surname;
     private int balance;
 
     public Client(String name, String surname, int balance) {
@@ -29,5 +29,8 @@ public class Client {
 
     public void deposit(int amount) {
         balance = balance + amount;
+    }
+    public String toString(){
+        return " " + balance;
     }
 }
