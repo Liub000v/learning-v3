@@ -1,49 +1,48 @@
 package com.company.bank;
-
 import com.company.bank.Client;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Bank {
-    ArrayList<Client> clientArraylist = new ArrayList();
+    HashMap<ClientId, Client> clientsId = new HashMap<>();
 
-    public void makeArray() {
-        clientArraylist.add(new Client("Fred", "Fabini", 9));
-        clientArraylist.add(new Client("Bred", "Babini", 8));
-        clientArraylist.add(new Client("Dred", "Dabini", 3));
-        clientArraylist.add(new Client("Vred", "Vabini", 10));
+    Bank() {
+        clientsId.put(new ClientId("Fred","Fabini"), new Client ("Fred","Fabini",9));
+        clientsId.put(new ClientId("Bred","Babini"), new Client("Bred","Babini",8));
+        clientsId.put(new ClientId("Dred","Dabini"), new Client("Dred","Dabini",3));
+        clientsId.put(new ClientId("Vred","Vabini"),  new Client("Vred","Vabini", 10));
     }
 
-    public void addClient(String name, String surname, int account) {
-        clientArraylist.add(new Client(name, surname, account));
+    public void addClient(ClientId clientId, Client client) {
+        clientsId.put(clientId, client);
     }
 
-    public void getBalance(String name, String surname) {
-        for (Client client : clientArraylist) {
-            if (client.getName().equals(name) && client.getSurname().equals(surname)) {
-                System.out.println(client.getBalance());
-            }
+    public void getBalance(ClientId client) {
+        if (clientsId.get(client)!=null){
+            System.out.println(clientsId.get(client).getBalance());
+        } else {
+            System.out.println("Ошибка ввода");
         }
     }
 
-    public void transfer(String fromName, String fromSurname, String toName, String toSurname, int amount) {
-        for (Client client : clientArraylist) {
-            if (client.getName().equals(fromName) && client.getSurname().equals(fromSurname)) {
-                client.withdrawal(amount);
-            }
-            if (client.getName().equals(toName) && client.getSurname().equals(toSurname)) {
-                client.deposit(amount);
-            }
+    public void transfer(ClientId fromClient, ClientId toClient, int amount) {
+        if (clientsId.get(fromClient)!=null && clientsId.get(toClient)!=null){
+        clientsId.get(fromClient).withdrawal(amount);
+        clientsId.get(toClient).deposit(amount);
+        } else {
+            System.out.println("Ошибка ввода");
         }
     }
 
-    public void deleteClient(String name, String surname) {
-        clientArraylist.removeIf(client -> client.getName().equals(name) && client.getSurname().equals(surname));
+    public void deleteClient(ClientId removeClient) {
+        if (clientsId.get(removeClient)!=null){
+        clientsId.remove(removeClient);
+        } else{
+            System.out.println("Ошибка ввода");
+        }
     }
 
-    public void getArray() {
-        for (Client client : clientArraylist) {
-            System.out.println(client.getName() + " " + client.getSurname() + " " + client.getBalance());
-        }
+    public void printArray() {
+        System.out.println(clientsId);
     }
 }
